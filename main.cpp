@@ -17,6 +17,9 @@ void reset() {
     //if(esp.getc() =='O' and esp.getc() == 'K') pc.printf("Module Reset");
 }
 
+float getTemp(float voltage){
+    return voltage * 100f * 3.3f;
+}
 
 string IntToString (int a)
 {
