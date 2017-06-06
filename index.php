@@ -51,6 +51,17 @@
 
 	}
 
+	function InsertDataToTableDB($data, $conn){
+			$sql = "INSERT INTO Temperatura VALUES (DEFAULT, 0, ".$data.")";
+			return $conn->query($sql);
+	}
+	function SelectDataFromTable DB($conn){
+			$sql = "SELECT * FROM Temperatura";
+			$result = $conn->query($sql);
+			return $result;
+			//return $result->fetch_assoc();
+	} 
+
 
 
 	
