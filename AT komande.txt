@@ -1,0 +1,13 @@
+AT+RST\r\n
+
+AT+CWJAP="LAB-2-15",""\r\n
+
+AT+CIPSTART="TCP","cijena.ba",80\r\n
+
+AT+CIPSEND=50\r\n
+
+GET /us.php?data=23 HTTP/1.1\r\nHost: cijena.ba\r\n\r\n
+
+AT+CIPSEND=120\r\n
+
+POST /us.php HTTP/1.1\r\nHost: cijena.ba\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 7\r\n\r\data=23\r\n\r\n

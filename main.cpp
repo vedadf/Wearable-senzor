@@ -4,17 +4,17 @@
 Serial pc ( USBTX , USBRX ); 
 Serial esp ( PTE0 , PTE1 );
 
-string data = "HEHE";
-string ssid ="SSID";
-string password="PW";
+string data = "29";
+string ssid ="LAB-2-15";
+string password="";
 
-string server = "www.cijena.ba"; 
+string server = "cijena.ba"; 
 string uri = "/us.php";
 
 void reset() {
     esp.printf("AT+RST");
-    wait(1);
-    //if(esp.getc() =='O' and esp.getc() == 'K') pc.printf("Module Reset");
+    wait(2);
+    printResponse();
 }
 
 float getTemp(float voltage){
@@ -29,25 +29,17 @@ string IntToString (int a)
 }
 
 void connectWifi() {
-    
     string cmd = "AT+CWJAP=\"" +ssid+"\",\"" + password + "\"";
     esp.printf(cmd.c_str());
     wait(4);
-    
-    if(esp.getc() =='O' and esp.getc() == 'K'){ 
-        pc.printf("Connected!");
-    } else {
-        connectWifi();
-        pc.printf("Cannot connect to wifi");
-    }
+    printResponse();
 }
 
 void httppost () {
+    //data = IntToString(getTemp(tempSenzor)); //TODO
     string cmd =  "AT+CIPSTART=\"TCP\",\"" + server + "\",80";
     esp.printf(cmd.c_str());
-    if( esp.getc() =='O' and esp.getc() == 'K' ) {
-        pc.printf("TCP connection ready");
-    } 
+
     wait(1);
 
     string postRequest =
@@ -67,6 +59,14 @@ void httppost () {
    esp.printf("AT+CIPCLOSE");
 }
 
+void printResponse(){
+    while(esp.readable()) {
+        wifi_char=esp.getc();
+        pc.putc(wifi_char);
+    }
+}
+
 int main() {
- 
+    pc.baud(115200);
+    wifi.baud(115200);
 }
