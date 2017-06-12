@@ -18,7 +18,7 @@
 	}
 
 	function InsertDataToTableDB($data, $conn){
-    	$sql = "INSERT INTO Temperatura VALUES (DEFAULT, 0, ".$data.")";
+    	$sql = "INSERT INTO Temperatura VALUES (DEFAULT, NOW(), ".$data.")";
     	$result = $conn->query($sql);
     	if(!$result){
 			return false;
@@ -27,7 +27,7 @@
 	}
 
 	function SelectDataFromTableDB($conn){
-	    $sql = "SELECT * FROM Temperatura";
+	    $sql = "SELECT ID, DATE_FORMAT(Vrijeme, '%H:%i') as Vrijeme, Temperatura FROM Temperatura ORDER BY ID";
 	    $result = $conn->query($sql);
 
 	    return $result;
@@ -77,7 +77,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" >
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" >       
 
-    <title>cijena.ba</title>
+    <title>Ugradbeni Sistemi</title>
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
@@ -88,8 +88,14 @@
 
   </head>
   <body>
-	<canvas id='myChart' width='300' height='300'></canvas>
-			    <?php 
+	<canvas id='myChart' ></canvas>
+	<style type="text/css">
+		#myChart {
+			height: 400px;
+			width: : 100%;	
+		}
+	</style>
+			    <?php
 			    	$conn = ConnectDb();
 			    	echo "
 						<script type='text/javascript'>
@@ -119,8 +125,15 @@
 		    }]
 		  }
 		});
-	</script>
 
+	</script>
+	<script type="text/javascript">
+		window.setTimeout(reload, 2500);
+		function reload() {
+			// body...
+			location.reload();
+		}
+	</script>
 	<?php
 
 		$conn = ConnectDb();
