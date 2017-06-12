@@ -83,9 +83,43 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 		
+	<!-- chart.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
 
   </head>
   <body>
+	<canvas id='myChart' width='300' height='300'></canvas>
+			    <?php 
+			    	$conn = ConnectDb();
+			    	echo "
+						<script type='text/javascript'>
+							var ctx = document.getElementById('myChart').getContext('2d');
+							var myChart = new Chart(ctx, {
+							  type: 'line',
+							  data: {
+		  			";
+			    	echo "labels: [";
+					$result = SelectDataFromTableDB($conn);
+					while($row = $result->fetch_assoc()){
+						echo "'" .$row['Vrijeme']. "',";
+					}
+					echo "'X'],";
+				   	echo "
+					    datasets: [{
+					      label: 'Temperatura',
+						    ";
+			    	echo "data: [";
+			    	$result = SelectDataFromTableDB($conn);
+					while($row = $result->fetch_assoc()){
+						echo $row['Temperatura']. ",";
+					}
+					echo "0],";
+			    ?>	      
+		      backgroundColor: "rgba(255,153,0,0.4)"
+		    }]
+		  }
+		});
+	</script>
 
 	<?php
 
